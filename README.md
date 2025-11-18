@@ -2,15 +2,14 @@
 Improvements on existing fantasy basketball ranking algorithms (e.g., ESPN, BasketballMonster) using PCA and SHAW (Structured Hierarchical Adjusted Weights) for category leagues. 
 
 
-
 Fantasy Basketball category leagues typically rank players by standardizing their statistics across nine (or more) categories and summing the resulting values. This approach implicitly assumes that each category contributes equally to player value and that statistical categories accumulate independently. Prior attempts to improve on this framework exist, but few have shown empirically defensible gains (e.g., Rosenof).
 
 In this paper, I propose a simple and intuitive alternative based on the covariation of statistical categories. Fantasy categories do not accumulate independently; they co-vary within players, and this covariation is structured by three player types: guards, bigs, and, to a lesser extent, wings. Because conventional nine-category leagues emphasize categories that disproportionately reward guards, a clear implication follows: weighting the dominant cluster of covarying categories yields player rankings that actually win head-to-head matchups. I demonstrate this method and evaluate it using a straightforward, if static, matchup-based approach, showing substantial improvements over traditional Z-score systems.
 
 
-# Methods
+## Methods
 
-## 1. Data and Preprocessing
+### 1. Data and Preprocessing
 I used per-game player statistics from the last five NBA seasons (2020-21 through 2024-25), including the standard nine categories used in Fantasy Basketball category leagues:
 
 - Points (PTS)  
@@ -29,7 +28,7 @@ Players with insufficient games played (< 15% of the season) were removed. Playe
 
 ---
 
-## 2. Traditional Z-Score Ranking
+### 2. Traditional Z-Score Ranking
 The standard method used by most fantasy analysts—and implemented by major sites like Yahoo, ESPN, and Basketball Monster—ranks players by:
 
 1. Converting each scoring category into a z-score  
@@ -44,7 +43,7 @@ Basketball Monster also deviates from straightforward Z score ranking in subtle 
 
 ---
 
-## 3. Category Covariation Analysis
+### 3. Category Covariation Analysis
 To examine whether fantasy categories truly accumulate independently, I computed the **category–category correlation matrix** using the nine standardized categories.  
 
 Next, I applied **Principal Components Analysis (PCA)** to the correlation matrix to identify latent dimensions structuring NBA production.
@@ -61,7 +60,7 @@ Results from PCA analysis can be confirmed using K-Means Cluster Analysis.
 
 ---
 
-## 4. Covariation-Informed Weighting (“SHAW Weights”)
+### 4. Covariation-Informed Weighting (“SHAW Weights”)
 Given the PCA and clustering results, I constructed a simple, interpretable weighting scheme for the nine statistical categories:
 
 - Increase weights for categories loading heavily on the dominant PC1 (guard axis):  
@@ -88,7 +87,7 @@ This yielded the following weight vector:
 The specific weights here are not what is important for this write up. It is the direction of weights in relation to the two dominant clusters that really matters. 
 The weights themselves could be optimized in several ways. Here, I simply scaled up or down each by a degree of 0.05 to acheive the highest matchup wins against traditional Z rankings in one year's data. 
 
-## 6. Weighted Z-Score Calculation
+### 6. Weighted Z-Score Calculation
 For each player, the SHAW metric is computed as follows:
 
 1. Z-scores were computed for all nine categories  
@@ -101,7 +100,7 @@ The resulting ranking is the **SHAW metric**, a covariation-aware extension of t
 
 ---
 
-## 7. Evaluation via Simulated Matchups
+### 7. Evaluation via Simulated Matchups
 To evaluate ranking quality, I used a static but robust matchup simulation:
 
 - Select top-N players by each ranking system  
