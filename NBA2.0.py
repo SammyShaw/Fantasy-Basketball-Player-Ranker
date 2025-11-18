@@ -350,12 +350,7 @@ print(unmatched["Player"].sort_values().unique())
 # TOP N Teams Comparison
 #########################
 
-"""
-Metrics: 
-    Traditional_Z_rank
-    Shaw_Z_rank
-    BBM_rank
-"""
+
 
 h2h = ['Traditional_Z_rank', 'SHAW_rank']
 
@@ -367,14 +362,7 @@ comp_stats = ['FG_PCT', 'FT_PCT', 'PTS', 'FG3M', 'REB', 'AST', 'STL', 'BLK', 'to
 
 
 def generate_summary_dfs(df, rank_metrics, top_n_list, categories):
-    """
-    For each top-N value and ranking metric:
-        - Select top N players
-        - Sum team stats, compute shooting percentages
 
-    Returns:
-        - summary_dfs: dict of DataFrames with cumulative raw stats per metric per top-N
-    """
     summary_dfs = {}
 
     for n in top_n_list:
@@ -528,11 +516,25 @@ combined_df[["Cum_Matchup_Wins", "Cum_Category_Wins"]] = (
 fig, axes = plt.subplots(1, 2, figsize=(16, 6), sharex=True)
 ax1, ax2 = axes
 
+color_map = {
+    "Traditional_Z_rank": "tab:blue",
+    "BBM_rank":           "tab:green",
+    "SHAW_rank":          "tab:orange",
+}
+
+
 # -----------------------------
 # Plot 1: Matchup Wins
 # -----------------------------
 for metric, group in combined_df.groupby("metric"):
-    ax1.plot(group["top_n"], group["Cum_Matchup_Wins"], marker="o", label=metric)
+    color = color_map.get(metric, None)  # None = fallback to default if missing
+    ax1.plot(
+        group["top_n"],
+        group["Cum_Matchup_Wins"],
+        marker="o",
+        label=metric,
+        color=color,
+    )
 
     final_total = cumulative_table.loc[metric, "Total_Matchup_Wins"]
     last_x = group["top_n"].iloc[-1]
@@ -545,12 +547,18 @@ ax1.set_xlabel("Top N")
 ax1.set_ylabel("Cumulative Matchup Wins")
 ax1.grid(True, alpha=0.3)
 
-
 # -----------------------------
 # Plot 2: Category Wins
 # -----------------------------
 for metric, group in combined_df.groupby("metric"):
-    ax2.plot(group["top_n"], group["Cum_Category_Wins"], marker="o", label=metric)
+    color = color_map.get(metric, None)
+    ax2.plot(
+        group["top_n"],
+        group["Cum_Category_Wins"],
+        marker="o",
+        label=metric,
+        color=color,
+    )
 
     final_total = cumulative_table.loc[metric, "Total_Category_Wins"]
     last_x = group["top_n"].iloc[-1]
@@ -569,5 +577,4 @@ fig.legend(handles, labels, title="Metric", loc="lower center", ncol=3)
 
 plt.tight_layout(rect=[0, 0.05, 1, 1])  # leaves space for legend
 plt.show()
-
 
