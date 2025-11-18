@@ -113,6 +113,8 @@ This purely empirical method compares how often a ranking system produces a hypo
 
 Across all top-N tiers and all seasons tested, the SHAW metric consistently dominated against traditional Z-scores and Basketball Monster.
 
+<img src="images/Shaw_vs_BBM_24_25.png" width="600">
 
+<img src="images/Shaw_vs_Trad_24_25.png" width="600">
 
 ---
