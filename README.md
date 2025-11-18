@@ -110,7 +110,7 @@ To evaluate ranking quality, I used a static but robust matchup simulation:
 
 This purely empirical method compares how often a ranking system produces a hypothetical team that outperforms another in category matchups.
 
-Across all top-N tiers and all seasons tested, the SHAW metric consistently dominated against traditional Z-scores and Basketball Monster.
+Across all top-N tiers and all seasons tested, the SHAW metric consistently dominated against traditional Z-scores and Basketball Monster. In the 2020-21 NBA season, for example, my player ranker beat Basketball Monster in 144 of 150 top-n matchups (where n = 1-150) and it beat the Traditional_Z score ranking 143/150. Further discussion is forthcoming on my porfolio page https://sammyshaw.github.io/2025/04/01/fantasy-bball-ranker.html
 
 <img src="images/Shaw_vs_BBM_20_21.png" width="600">
 
